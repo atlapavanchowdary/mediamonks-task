@@ -1,0 +1,363 @@
+@keyframes monk {
+  0% {
+    width: 1.5em;
+  }
+  100% {
+    width: 7em;
+  }
+}
+
+@keyframes remove {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes text {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@font-face {
+  font-family: klavika;
+  src: local('klavika light'),
+       local(sans-serif);
+  font-weight: bold;
+}
+
+/*--- Declaration CSS variables ---*/
+  :root {
+    /*--- General colors ---*/
+    --base-color-white: #fff;
+    --base-color-black: #000;
+    --left:0
+    /*--- End ---*/
+
+    /*--- Hover state ---*/
+    --hover-state: #D3D3D3;
+    /*--- End ---*/
+
+    /*--- Font  family ---*/
+    --main-font: 'Klavica light', sans-serif;
+    /*--- End ---*/
+
+    /*--- Font sizes ---*/
+    --font-size-small: 0.8em;
+    --font-size-normal: 1em;
+    --font-size-big: 1.2em;
+    /*--- End ---*/
+
+    /*--- Basic scaler variable ---*/
+    --base-scaler: 1em;
+    /*--- End ---*/
+  }
+/*--- End of declaration css variables ---*/
+
+/*--- Reset for development purpose ---*/
+  html, body {
+    margin: 0;
+  }
+
+  .overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 10;
+    background-image: url("../images/loaderbg.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    animation: remove 3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+  }
+
+  .overlay > img {
+    width: 1em;
+    margin: 0 auto;
+    animation: monk 3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+  }
+
+  .overlay p:first-of-type {
+    position: fixed;
+    top: 60%;
+    left: 45%;
+    transform: translateY(-50%);
+    color: var(--base-color-white);
+    text-align: center;
+    animation: text 6s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+  }
+/*--- End ---*/
+
+/*--- Slider container styles ---*/
+  .slider-container {
+    width: 100vw;
+    height: 100vh;
+    overflow-x:scroll;
+    position: relative;
+    z-index: 1;
+  }
+  .js-enabled .slider-container {
+    overflow:hidden;
+  }
+
+  .slider-container-inner {
+    display: flex;
+    position: absolute;
+    transition: transform 1s;
+    transform: translateX(var(--left));
+  }
+
+  .slider-container-inner > article {
+    position: relative;
+  }
+
+  .slider-container-inner > article h1 {
+    margin: 0;
+    font-family: klavika, sans-serif;
+    font-weight: lighter;
+    max-width: 10em;
+    font-size: calc(3 * var(--font-size-big));
+    position: absolute;
+    color: var(--base-color-white);
+    top: 50%;
+    left: 10%;
+    transform: translateY(-40%);
+    opacity:1;
+    transition:all .5s .5s ease-in;
+  }
+  .js-enabled .slider-container-inner > article h1 {
+    opacity:0;
+  }
+  .slider-container-inner > article.active h1 {
+    opacity:1;
+    transform: translateY(-80%)
+  }
+  .slider-container-inner > article:first-of-type h1 {
+    top: 2.5em;
+    left: .5em;
+  }
+/*--- End ---*/
+
+/*--- Controlls styles ---*/
+
+  .next::after, .previous::after {
+    content: ">";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    color: var(--base-color-white);
+    font-size: calc( 5.5 * var(--base-scaler));
+    width: 1em;
+    height: 3em;
+    transform: translateY(-40%);
+    cursor: pointer;
+    transition: 0.2s linear;
+    font-family: klavika, sans-serif;
+    font-weight: lighter;
+    display:none;
+  }
+
+  .js-enabled .next::after, .js-enabled .previous::after {
+    display:block;
+  }
+
+
+  .previous::after {
+    content: "<";
+    left: 0;
+    text-align: right;
+  }
+
+  .next:hover::after {
+    opacity: .5;
+    margin-right: -.2em;
+  }
+
+  .previous:hover::after {
+    opacity: .5;
+    margin-left: -.2em;
+  }
+/*--- End ---*/
+
+/*--- Square counter styles ---*/
+  .block-selection {
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    bottom: 1em;
+    left: 2em;
+    right: 0;
+    border: .15em dotted white;
+    width: 15vw;
+    max-width: 15em;
+  }
+
+  .block-selection > .square {
+    margin: .2em;
+    border-left: .15em dotted white;
+    border-radius: .1em;
+    width: .8em;
+    height: .8em;
+    display: inline-block;
+    opacity: 1;
+    color: var(--base-color-white);
+    padding: .2em;
+    text-align: right;
+    cursor: pointer;
+  }
+
+  .block-selection > .square:first-of-type {
+    border-left: none;
+  }
+
+  .block-selection > .square:hover {
+    opacity: .65;
+  }
+
+  .active {
+    background-color: var(--base-color-white);
+  }
+
+  .block-selection > span {
+    font-family: klavika, sans-serif;
+    font-weight: lighter;
+    font-size: var(--font-size-normal);
+  }
+
+  .step-counter {
+    z-index: 100;
+    position: absolute;
+    color: var(--base-color-white);
+    bottom: 0em;
+    left: 17em;
+    display: none;
+    font-family: klavika, sans-serif;
+    font-weight: lighter;
+    font-size: var(--font-size-normal);
+  }
+/*--- End ---*/
+
+/*** Start details block ***/
+  .details {
+    position: absolute;
+    width: 50vw;
+    height: 100vh;
+    right: 0;
+    top: 0;
+    padding-right: 1em;
+    background-color: var(--base-color-black);
+    text-align: right;
+  }
+
+  .details > h1 {
+    margin: 0;
+    font-family: klavika, sans-serif;
+    font-weight: lighter;
+    font-size: calc(3 * var(--font-size-big));
+    color: var(--base-color-white);
+  }
+
+  .details > article {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 40%;
+  }
+
+  .details > article > p {
+    text-align: right;
+    right: 0;
+    color: var(--base-color-white);
+    font-family: klavika, sans-serif;
+    font-weight: lighter;
+    font-size: var(--font-size-normal);
+    padding-right: 1em;
+  }
+
+  .details > article > p > a {
+    color: var(--base-color-white);
+    text-decoration: underline;
+  }
+
+  .details > article > ul {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .details > article > ul > li {
+    list-style-type: none;
+    font-family: klavika, sans-serif;
+    font-weight: lighter;
+    color: var(--base-color-white);
+    margin-right: 1em;
+    font-size: var(--font-size-normal);
+  }
+
+  .details > article > ul > li > a {
+    text-decoration: none;
+    color: var(--base-color-white);
+  }
+
+  .details > article > ul > li > a > img {
+    max-width: 1em;
+    height: 1em;
+    padding-right: .4em;
+  }
+
+  .details > article > ul > li > a > img:first-of-type {
+    margin-bottom: -.2em;
+  }
+/*** End ***/
+
+/*** Start page text ***/
+  .statement {
+    position: absolute;
+    bottom: 4em;
+    left: 2em;
+    z-index: 1;
+    color: var(--base-color-white);
+    font-family: klavika, sans-serif;
+    font-weight: lighter;
+    font-size: var(--font-size-normal);
+    max-width: 33em;
+
+  }
+/*** End ***/
+
+/*** Footer styles ***/
+  footer {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    z-index: 1;
+  }
+/*** End ***/
+
+/*** Show and hide classes ***/
+  .hide {
+    display: none;
+  }
+
+  .show {
+    display: block;
+  }
+/*** End ***/
